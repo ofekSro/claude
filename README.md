@@ -33,6 +33,9 @@ Both scripts copy the files to `~/.claude/agents/` and `~/.claude/skills/`, over
 | `task-planner` | no | Reads `TODO.md` / `DONE.md`, picks the next batch of related tasks, writes acceptance criteria. |
 | `task-implementer` | yes | Implements a whole batch without stopping, one commit per task. |
 | `task-verifier` | yes | Independently re-checks every criterion, reviews the diff, fixes what fails. |
+| `section-planner` | no | Thesis writing: turns an agreed roadmap for one LaTeX subsection into `plans/<label>.md`, one claim, evidence and transition per paragraph. |
+| `paragraph-writer` | yes | Thesis writing: writes or rewrites one paragraph from the plan under a `% [Pn]` anchor, in the project's CLAUDE.md style, citing only existing bib keys. |
+| `flow-reviewer` | no | Thesis writing: fresh-eyes review of a subsection's argument (review mode) or of its fit with the chapter and thesis (fit mode). Numbered, line-anchored findings. |
 
 ## Skills
 
@@ -42,6 +45,7 @@ Both scripts copy the files to `~/.claude/agents/` and `~/.claude/skills/`, over
 | `/gui-qa` | Real render-and-drive QA of the GUI, shows screenshots and failures. |
 | `/todo` | Works through `TODO.md` in batches: plan, implement, verify, simplify, QA, then moves finished tasks to `DONE.md` with details. |
 | `/ref` | Registers reference documents (manuals, standards) under `docs/references/` with an index that every agent reads first. |
+| `/section` | Thesis writing, one LaTeX subsection at a time: `plan`, `write`, `review`, `fit`, `apply`, `status`. The roadmap is agreed in chat, the plan is a file, the review is a separate agent. |
 
 ## Conventions the agents rely on
 
