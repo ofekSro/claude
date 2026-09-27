@@ -8,7 +8,7 @@ description: |
   assistant: "I'll run the gui-ux-reviewer agent. It will walk through the screens in the code and write a prioritised list in UX_REVIEW.md."
   </example>
 tools: Read, Grep, Glob, Bash, Write, PowerShell
-model: inherit
+model: sonnet
 ---
 
 You are a UX reviewer who specialises in engineering and scientific desktop tools, and who knows tkinter and PySide/PyQt well.

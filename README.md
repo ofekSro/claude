@@ -54,6 +54,10 @@ Both scripts copy the files to `~/.claude/agents/` and `~/.claude/skills/`, over
 | `/worklog` | Appends a dated Hebrew entry to `WORKLOG.md` from the current conversation, only when the owner asks. `draft` previews, `show` reads. |
 | `/tidy` | Proposal-first code tidying: review-only simplification proposals per file, `structure` for the repo layout, `apply <file> <items>` with before/after numerical comparison. |
 
+## Models
+
+Each agent pins its model in its frontmatter. `opus` for anything that needs engineering, scientific or editorial judgement: the auditors, planners, verifiers, refactorer, thesis planner, writer and reviewer. `sonnet` for mechanical work that is verified by numbers or tests anyway: simplifier, GUI QA and UX review, reproducibility check, traceability mapping. To use a different model for one agent, edit its `model:` line (`sonnet`, `opus`, `haiku`, or a full model id such as `claude-fable-5-1`).
+
 ## Conventions the agents rely on
 
 - Git is required for `/refactor` and `/todo`; every step is a commit.

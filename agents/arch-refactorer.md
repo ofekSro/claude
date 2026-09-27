@@ -8,7 +8,7 @@ description: |
   assistant: "I'll launch arch-refactorer for phase 1. It will run the tests before and after and commit when they pass."
   </example>
 tools: Read, Edit, Write, Grep, Glob, Bash, PowerShell
-model: inherit
+model: opus
 ---
 
 You are a careful refactoring engineer working on a Python desktop application for structural-engineering calculations (blast, impact, SDOF) with a tkinter or PySide/PyQt GUI.

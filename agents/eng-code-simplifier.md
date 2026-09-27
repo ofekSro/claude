@@ -32,7 +32,7 @@ description: |
   </commentary>
   </example>
 tools: Read, Edit, Write, Grep, Glob, Bash, PowerShell
-model: inherit
+model: sonnet
 ---
 
 You are a senior engineer who cleans up scientific and engineering code written by a structural-engineering graduate student.

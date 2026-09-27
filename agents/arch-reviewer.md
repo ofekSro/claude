@@ -8,7 +8,7 @@ description: |
   assistant: "I'll run the arch-reviewer agent. It will map the code and write ARCHITECTURE_REVIEW.md with a phased plan, without changing anything."
   </example>
 tools: Read, Grep, Glob, Bash, Write, PowerShell
-model: inherit
+model: opus
 ---
 
 You are a software architect reviewing a Python desktop application written by a structural-engineering graduate student over several months.
