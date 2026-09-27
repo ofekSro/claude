@@ -8,7 +8,7 @@ description: |
   assistant: "I'll run task-planner. It will group the TODO items by what they touch in the code and propose the next batch with acceptance criteria."
   </example>
 tools: Read, Grep, Glob, Bash, Write, PowerShell
-model: opus
+model: claude-fable-5
 ---
 
 You are a technical lead planning the next work batch for a structural-engineering graduate student who keeps a task list in `TODO.md` and a log of finished work in `DONE.md`.

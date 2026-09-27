@@ -56,7 +56,7 @@ Both scripts copy the files to `~/.claude/agents/` and `~/.claude/skills/`, over
 
 ## Models
 
-Each agent pins its model in its frontmatter. `opus` for anything that needs engineering, scientific or editorial judgement: the auditors, planners, verifiers, refactorer, thesis planner, writer and reviewer. `sonnet` for mechanical work that is verified by numbers or tests anyway: simplifier, GUI QA and UX review, reproducibility check, traceability mapping. To use a different model for one agent, edit its `model:` line (`sonnet`, `opus`, `haiku`, or a full model id such as `claude-fable-5-1`).
+Each agent pins its model in its frontmatter. `claude-fable-5` (Fable 5) for anything that needs engineering, scientific or editorial judgement: the auditors, planners, verifiers, refactorer, thesis planner, writer and reviewer. `sonnet` for mechanical work that is verified by numbers or tests anyway: simplifier, GUI QA and UX review, reproducibility check, traceability mapping. Every orchestrating skill carries a fallback rule: if an agent refuses on safety grounds, it is relaunched once on Opus 5.5 (`model: "claude-opus-5-5"` override) and the reply says so. To change a model, edit the agent's `model:` line (`sonnet`, `opus`, `haiku`, or a full model id).
 
 ## Conventions the agents rely on
 

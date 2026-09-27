@@ -52,3 +52,7 @@ Same as Stage 2, but the instruction to arch-refactorer is `apply UX finding N f
 - Never let an agent's report be the only record: always run the tests yourself before committing.
 - If any agent reports a suspected engineering error (coefficient, unit, validity range), collect it in a running list at `docs/ENGINEERING_QUESTIONS.md` so the user can review it separately. Never let an agent fix those.
 - Keep the user's inputs and outputs of the app unchanged throughout; the goal is structure and usability, not new features.
+
+## Model fallback
+
+Agents that need judgement run on Fable 5 (`model: claude-fable-5` in their frontmatter). If an agent comes back with a refusal on safety grounds, or with an empty or evasive report that shows it declined the task (this domain uses words like charge, TNT and detonation in an ordinary engineering sense), relaunch the same agent once with the Agent tool's `model: "claude-opus-5-5"` override (Opus 5.5), with the same prompt. Say in the reply that the fallback was used and for which agent. Do not retry more than once, and do not rephrase the task to get around a refusal; if Opus also declines, report it to the owner.

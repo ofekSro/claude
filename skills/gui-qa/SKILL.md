@@ -19,3 +19,7 @@ Run a real GUI test of this project and show the user the evidence.
 Notes:
 - tkinter apps will open a real window on the desktop during the run. Tell the user not to click on it while the test runs.
 - If the agent reports that `pillow` is missing, offer to install it, since tkinter screenshots need it.
+
+## Model fallback
+
+Agents that need judgement run on Fable 5 (`model: claude-fable-5` in their frontmatter). If an agent comes back with a refusal on safety grounds, or with an empty or evasive report that shows it declined the task (this domain uses words like charge, TNT and detonation in an ordinary engineering sense), relaunch the same agent once with the Agent tool's `model: "claude-opus-5-5"` override (Opus 5.5), with the same prompt. Say in the reply that the fallback was used and for which agent. Do not retry more than once, and do not rephrase the task to get around a refusal; if Opus also declines, report it to the owner.

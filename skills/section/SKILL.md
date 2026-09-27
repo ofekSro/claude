@@ -52,3 +52,7 @@ List the plans in `plans/`, and for each whether its paragraphs exist in the `.t
 - Never resolve or remove an existing `NEEDCITATION!` marker unless the author asks.
 - When the author writes in Hebrew, thesis text is still written in English. Feedback is passed to the writer as the author gave it.
 - If a step changes more than one paragraph, say so before launching it.
+
+## Model fallback
+
+Agents that need judgement run on Fable 5 (`model: claude-fable-5` in their frontmatter). If an agent comes back with a refusal on safety grounds, or with an empty or evasive report that shows it declined the task (this domain uses words like charge, TNT and detonation in an ordinary engineering sense), relaunch the same agent once with the Agent tool's `model: "claude-opus-5-5"` override (Opus 5.5), with the same prompt. Say in the reply that the fallback was used and for which agent. Do not retry more than once, and do not rephrase the task to get around a refusal; if Opus also declines, report it to the owner.
