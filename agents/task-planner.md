@@ -7,7 +7,7 @@ description: |
   user: "What should I work on next from the TODO list?"
   assistant: "I'll run task-planner. It will group the TODO items by what they touch in the code and propose the next batch with acceptance criteria."
   </example>
-tools: Read, Grep, Glob, Bash, Write
+tools: Read, Grep, Glob, Bash, Write, PowerShell
 model: inherit
 ---
 

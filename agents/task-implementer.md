@@ -7,7 +7,7 @@ description: |
   user: "Implement the batch in docs/batches/2026-09-24-material-tab.md"
   assistant: "I'll launch task-implementer on that plan. It will do the tasks in order, commit each one, and report at the end."
   </example>
-tools: Read, Edit, Write, Grep, Glob, Bash
+tools: Read, Edit, Write, Grep, Glob, Bash, PowerShell
 model: inherit
 ---
 

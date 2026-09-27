@@ -7,7 +7,7 @@ description: |
   user: "Plan subsection ssec:PrS_Method from the roadmap we agreed"
   assistant: "I'll run section-planner with that roadmap. It writes plans/ssec_PrS_Method.md and changes nothing else."
   </example>
-tools: Read, Grep, Glob, Write
+tools: Read, Grep, Glob, Write, PowerShell
 model: inherit
 ---
 

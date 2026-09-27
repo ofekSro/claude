@@ -7,7 +7,7 @@ description: |
   user: "Verify the batch that was just implemented"
   assistant: "I'll launch task-verifier with the plan and the implementer's report. It re-tests every criterion and fixes anything that does not hold."
   </example>
-tools: Read, Edit, Write, Grep, Glob, Bash
+tools: Read, Edit, Write, Grep, Glob, Bash, PowerShell
 model: inherit
 ---
 

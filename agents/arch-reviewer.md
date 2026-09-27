@@ -7,7 +7,7 @@ description: |
   user: "Review the architecture of this project and tell me how to restructure it"
   assistant: "I'll run the arch-reviewer agent. It will map the code and write ARCHITECTURE_REVIEW.md with a phased plan, without changing anything."
   </example>
-tools: Read, Grep, Glob, Bash, Write
+tools: Read, Grep, Glob, Bash, Write, PowerShell
 model: inherit
 ---
 
@@ -34,7 +34,9 @@ Use Glob, Grep and Bash to collect facts. Do not guess.
 
 # Step 2: judge against the target architecture
 
-The default target for this kind of application has four layers. Adapt it to the project, do not force it.
+First decide what kind of repo this is. If the GUI is absent or is a thin launcher over CLI entry points, and the repo's purpose is to turn data files into tables and figures (a core package, `tools/`, `outputs/`, `tests/`, pinned artefacts), it is a **research analysis repo**. Then the target is: a core package with pure functions and no I/O in the numerics, entry points that only orchestrate, one folder per standalone tool, every output path defined once, results of record separated from scratch output, and tests that pin the numbers. Judge against that, and treat the "results of record" and the rationale comments as things that must survive any phase untouched. Skip the GUI layer checks that do not apply. Obey the project `CLAUDE.md` approval rules: your plan is a proposal, nothing in it is executed by you.
+
+Otherwise, the default target for a desktop application has four layers. Adapt it to the project, do not force it.
 
 1. `core/` — pure calculation code. No GUI imports, no file dialogs, no print. Functions take numbers and arrays, return numbers, arrays or small dataclasses. Fully testable without a window.
 2. `models/` — the project state: input parameters, material and standard tables, results. Dataclasses or plain classes. Serialisable to JSON so a project can be saved and loaded.

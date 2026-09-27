@@ -7,7 +7,7 @@ description: |
   user: "The GUI of this tool is annoying to use, what should I change?"
   assistant: "I'll run the gui-ux-reviewer agent. It will walk through the screens in the code and write a prioritised list in UX_REVIEW.md."
   </example>
-tools: Read, Grep, Glob, Bash, Write
+tools: Read, Grep, Glob, Bash, Write, PowerShell
 model: inherit
 ---
 

@@ -7,7 +7,7 @@ description: |
   user: "Run phase 1 of the architecture plan"
   assistant: "I'll launch arch-refactorer for phase 1. It will run the tests before and after and commit when they pass."
   </example>
-tools: Read, Edit, Write, Grep, Glob, Bash
+tools: Read, Edit, Write, Grep, Glob, Bash, PowerShell
 model: inherit
 ---
 

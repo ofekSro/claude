@@ -7,7 +7,7 @@ description: |
   user: "Check that the GUI still works after the refactor"
   assistant: "I'll run gui-qa-tester. It will open the app, screenshot each screen, run an analysis through the GUI and compare the displayed numbers with the core functions."
   </example>
-tools: Read, Write, Grep, Glob, Bash
+tools: Read, Write, Grep, Glob, Bash, PowerShell
 model: inherit
 ---
 

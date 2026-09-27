@@ -7,7 +7,7 @@ description: |
   user: "Review the flow of ssec:PrS_Method"
   assistant: "I'll run flow-reviewer in review mode. It returns findings with line numbers and changes nothing."
   </example>
-tools: Read, Grep, Glob, Bash
+tools: Read, Grep, Glob, Bash, PowerShell
 model: inherit
 ---
 

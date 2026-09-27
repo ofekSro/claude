@@ -31,7 +31,7 @@ description: |
   "Review only" switches the agent to proposal mode with no edits.
   </commentary>
   </example>
-tools: Read, Edit, Write, Grep, Glob, Bash
+tools: Read, Edit, Write, Grep, Glob, Bash, PowerShell
 model: inherit
 ---
 

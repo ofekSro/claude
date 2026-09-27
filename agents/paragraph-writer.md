@@ -7,7 +7,7 @@ description: |
   user: "Write paragraph 3 of ssec:PrS_Method"
   assistant: "I'll run paragraph-writer for P3 from plans/ssec_PrS_Method.md. It inserts only that paragraph."
   </example>
-tools: Read, Grep, Glob, Edit, Bash
+tools: Read, Grep, Glob, Edit, Bash, PowerShell
 model: inherit
 ---
 

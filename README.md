@@ -36,6 +36,10 @@ Both scripts copy the files to `~/.claude/agents/` and `~/.claude/skills/`, over
 | `section-planner` | no | Thesis writing: turns an agreed roadmap for one LaTeX subsection into `plans/<label>.md`, one claim, evidence and transition per paragraph. |
 | `paragraph-writer` | yes | Thesis writing: writes or rewrites one paragraph from the plan under a `% [Pn]` anchor, in the project's CLAUDE.md style, citing only existing bib keys. |
 | `flow-reviewer` | no | Thesis writing: fresh-eyes review of a subsection's argument (review mode) or of its fit with the chapter and thesis (fit mode). Numbered, line-anchored findings. |
+| `research-auditor` | no | Scientific audit of a research repo through one lens: `algorithm` (code vs docs vs thesis), `physics` (units, scaling, reference data) or `choices` (thresholds, criteria, estimators and their justification). Writes `docs/audit/<date>/<lens>.md`. |
+| `stats-auditor` | no | Audit of the regression and model-selection methodology: leakage, selection on the test set, unit of observation, metrics, uncertainty, extrapolation. |
+| `repro-checker` | no | Runs fast tests and a short pipeline into scratch, checks anchor tests really ran, diffs regenerated tables against committed results of record. |
+| `traceability-mapper` | no | Builds `docs/TRACEABILITY.md`: every thesis claim mapped to code, test and output file with a status. Reads the thesis only at paths the owner names. |
 
 ## Skills
 
@@ -46,6 +50,9 @@ Both scripts copy the files to `~/.claude/agents/` and `~/.claude/skills/`, over
 | `/todo` | Works through `TODO.md` in batches: plan, implement, verify, simplify, QA, then moves finished tasks to `DONE.md` with details. |
 | `/ref` | Registers reference documents (manuals, standards) under `docs/references/` with an index that every agent reads first. |
 | `/section` | Thesis writing, one LaTeX subsection at a time: `plan`, `write`, `review`, `fit`, `apply`, `status`. The roadmap is agreed in chat, the plan is a file, the review is a separate agent. |
+| `/verify` | Scientific audit of a research repo: five read-only lenses in parallel, a summary, `trace` for the thesis matrix, and `fix <id>` with an explain-then-approve flow for each finding. |
+| `/worklog` | Appends a dated Hebrew entry to `WORKLOG.md` from the current conversation, only when the owner asks. `draft` previews, `show` reads. |
+| `/tidy` | Proposal-first code tidying: review-only simplification proposals per file, `structure` for the repo layout, `apply <file> <items>` with before/after numerical comparison. |
 
 ## Conventions the agents rely on
 
