@@ -26,6 +26,7 @@ Language: Hebrew, with technical terms, file names, function names and commands 
    - Numbers are copied from tool output that appeared in the conversation. If a number is not in the conversation, write "לא נמדד" rather than a guess.
    - Decisions are attributed: "הבעלים החליט" versus "הוצע ולא הוחלט".
    - A change that was proposed and rejected is recorded as rejected, with the reason.
+   - A decision is referenced by its D number from `docs/DECISIONS.md` when one exists.
    - Findings from `/verify` are referenced by id and file (`algorithm-3`, `docs/audit/2026-09-27/algorithm.md`), not copied in full.
    - Do not summarise the conversation's chit-chat. Only what matters for the research.
    - Length: as long as the session deserves. A five-minute question is four lines. A day of auditing may be forty.

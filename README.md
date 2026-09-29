@@ -39,6 +39,7 @@ Both scripts copy the files to `~/.claude/agents/` and `~/.claude/skills/`, over
 | `research-auditor` | no | Scientific audit of a research repo through one lens: `algorithm` (code vs docs vs thesis), `physics` (units, scaling, reference data) or `choices` (thresholds, criteria, estimators and their justification). Writes `docs/audit/<date>/<lens>.md`. |
 | `stats-auditor` | no | Audit of the regression and model-selection methodology: leakage, selection on the test set, unit of observation, metrics, uncertainty, extrapolation. |
 | `repro-checker` | no | Runs fast tests and a short pipeline into scratch, checks anchor tests really ran, diffs regenerated tables against committed results of record. |
+| `decision-reviewer` | no | Adversarial but reasonable review of one research decision: does it answer the owner's question, does it respect the owner's anchors, is the evidence and the rule behind it sound. Only objections that matter in engineering terms. |
 | `traceability-mapper` | no | Builds `docs/TRACEABILITY.md`: every thesis claim mapped to code, test and output file with a status. Reads the thesis only at paths the owner names. |
 
 ## Skills
@@ -51,6 +52,7 @@ Both scripts copy the files to `~/.claude/agents/` and `~/.claude/skills/`, over
 | `/ref` | Registers reference documents (manuals, standards) under `docs/references/` with an index that every agent reads first. |
 | `/section` | Thesis writing, one LaTeX subsection at a time: `plan`, `write`, `review`, `fit`, `apply`, `status`. The roadmap is agreed in chat, the plan is a file, the review is a separate agent. |
 | `/verify` | Scientific audit of a research repo: five read-only lenses in parallel, a summary, `trace` for the thesis matrix, and `fix <id>` with an explain-then-approve flow for each finding. |
+| `/decide` | Decision register `docs/DECISIONS.md` (`index`, `status`), framing a new decision before measuring (`open`), and reviewing one (`check D<n>`). Carries a binding protocol for disagreements with the owner. |
 | `/worklog` | Appends a dated Hebrew entry to `WORKLOG.md` from the current conversation, only when the owner asks. `draft` previews, `show` reads. |
 | `/tidy` | Proposal-first code tidying: review-only simplification proposals per file, `structure` for the repo layout, `apply <file> <items>` with before/after numerical comparison. |
 

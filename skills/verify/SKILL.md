@@ -38,7 +38,7 @@ The thesis lives outside the repo. Running this command with explicit paths is t
 ## `/verify fix <finding-id>`
 
 The approval flow, one finding at a time:
-1. Find the finding in today's or the latest audit reports. Quote it.
+1. Find the finding in today's or the latest audit reports. Quote it. If resolving it means choosing between alternatives (a criterion, threshold, model form), run the `/decide open` steps first so the decision has a D entry with the owner's question, anchors and a numeric rule before anything changes.
 2. Write, in Hebrew, before touching anything:
    - **מה ישתנה:** the exact files and functions, and the nature of the change.
    - **למה:** the finding's evidence, in two sentences.
@@ -62,4 +62,4 @@ List the audit folders under `docs/audit/`, and for the latest: findings by seve
 
 ## Model fallback
 
-Agents that need judgement run on Fable 5 (`model: claude-fable-5` in their frontmatter). If an agent comes back with a refusal on safety grounds, or with an empty or evasive report that shows it declined the task (this domain uses words like charge, TNT and detonation in an ordinary engineering sense), relaunch the same agent once with the Agent tool's `model: "claude-opus-5-5"` override (Opus 5.5), with the same prompt. Say in the reply that the fallback was used and for which agent. Do not retry more than once, and do not rephrase the task to get around a refusal; if Opus also declines, report it to the owner.
+Agents that need judgement run on Fable 5 (`model: claude-fable-5` in their frontmatter). If an agent comes back with a refusal on safety grounds, fails because Fable 5 is unavailable or out of usage, or returns an empty or evasive report that shows it declined the task (this domain uses words like charge, TNT and detonation in an ordinary engineering sense), relaunch the same agent once with the Agent tool's `model: "claude-opus-5-5"` override (Opus 5.5), with the same prompt. Say in the reply that the fallback was used and for which agent. Do not retry more than once, and do not rephrase the task to get around a refusal; if Opus also declines, report it to the owner.
