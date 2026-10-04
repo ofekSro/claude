@@ -1,16 +1,29 @@
-# Copies agents/ and skills/ into ~/.claude so they are available in every project.
+# Copies agents/ and skills/ (and thesis-writing/agents, thesis-writing/skills) into ~/.claude
+# so they are available in every project.
 $ErrorActionPreference = "Stop"
 $src = Split-Path -Parent $MyInvocation.MyCommand.Path
 $dst = Join-Path $env:USERPROFILE ".claude"
+$roots = @($src, (Join-Path $src "thesis-writing"))
 
 New-Item -ItemType Directory -Force (Join-Path $dst "agents") | Out-Null
 New-Item -ItemType Directory -Force (Join-Path $dst "skills") | Out-Null
 
-Copy-Item (Join-Path $src "agents\*.md") (Join-Path $dst "agents") -Force
-Get-ChildItem (Join-Path $src "skills") -Directory | ForEach-Object {
-    Copy-Item $_.FullName (Join-Path $dst "skills") -Recurse -Force
+$agents = @(); $skills = @()
+foreach ($r in $roots) {
+    $a = Join-Path $r "agents"
+    $s = Join-Path $r "skills"
+    if (Test-Path $a) {
+        Copy-Item (Join-Path $a "*.md") (Join-Path $dst "agents") -Force
+        $agents += Get-ChildItem $a -Filter *.md | ForEach-Object { $_.BaseName }
+    }
+    if (Test-Path $s) {
+        Get-ChildItem $s -Directory | ForEach-Object {
+            Copy-Item $_.FullName (Join-Path $dst "skills") -Recurse -Force
+            $skills += $_.Name
+        }
+    }
 }
 
 Write-Host "Installed to $dst"
-Write-Host "Agents:" (Get-ChildItem (Join-Path $src "agents") -Filter *.md | ForEach-Object { $_.BaseName }) -Separator " "
-Write-Host "Skills:" (Get-ChildItem (Join-Path $src "skills") -Directory | ForEach-Object { $_.Name }) -Separator " "
+Write-Host "Agents:" ($agents | Sort-Object) -Separator " "
+Write-Host "Skills:" ($skills | Sort-Object) -Separator " "
