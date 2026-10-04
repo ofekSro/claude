@@ -40,6 +40,7 @@ Both scripts copy the files to `~/.claude/agents/` and `~/.claude/skills/`, over
 | `stats-auditor` | no | Audit of the regression and model-selection methodology: leakage, selection on the test set, unit of observation, metrics, uncertainty, extrapolation. |
 | `repro-checker` | no | Runs fast tests and a short pipeline into scratch, checks anchor tests really ran, diffs regenerated tables against committed results of record. |
 | `decision-reviewer` | no | Adversarial but reasonable review of one research decision: does it answer the owner's question, does it respect the owner's anchors, is the evidence and the rule behind it sound. Only objections that matter in engineering terms. |
+| `citation-verifier` | no | Thesis citations: for one source and the sentences citing it, finds the page and verbatim quote for each claim and judges whether the source supports the sentence as written. |
 | `traceability-mapper` | no | Builds `docs/TRACEABILITY.md`: every thesis claim mapped to code, test and output file with a status. Reads the thesis only at paths the owner names. |
 
 ## Skills
@@ -51,6 +52,7 @@ Both scripts copy the files to `~/.claude/agents/` and `~/.claude/skills/`, over
 | `/todo` | Works through `TODO.md` in batches: plan, implement, verify, simplify, QA, then moves finished tasks to `DONE.md` with details. |
 | `/ref` | Registers reference documents (manuals, standards) under `docs/references/` with an index that every agent reads first. |
 | `/section` | Thesis writing, one LaTeX subsection at a time: `plan`, `write`, `review`, `fit`, `apply`, `status`. The roadmap is agreed in chat, the plan is a file, the review is a separate agent. |
+| `/cite-check` | Checks that cited sources support the thesis sentences that cite them, with page and quote for each, for a section, a line range or one bib key. Read-only. |
 | `/verify` | Scientific audit of a research repo: five read-only lenses in parallel, a summary, `trace` for the thesis matrix, and `fix <id>` with an explain-then-approve flow for each finding. |
 | `/decide` | Decision register `docs/DECISIONS.md` (`index`, `status`), framing a new decision before measuring (`open`), and reviewing one (`check D<n>`). Carries a binding protocol for disagreements with the owner. |
 | `/worklog` | Appends a dated Hebrew entry to `WORKLOG.md` from the current conversation, only when the owner asks. `draft` previews, `show` reads. |
