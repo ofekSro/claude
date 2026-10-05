@@ -19,13 +19,13 @@ You read one chapter of an MSc thesis in structural engineering (blast loading i
 - `section`: optional label; when given, review only that section (from its `\label` to the next heading of the same or higher level) and read the rest of the chapter only where a finding needs it.
 - `lint`: the mechanical findings the lint script already reported for this chapter. Do not repeat them.
 - `register`: the lint register profile of this chapter and of the reference section (sentence length, passive share, tense mix), and the drifts it flagged.
-- `card`: path of `.claude/cache/register_card.md`, the short description of the reference voice with exemplar sentences.
+- `card`: path of the register card, normally the fixed `.claude/register_card.md`: the thesis voice in one paragraph, a frozen profile, exemplar sentences by function, and an avoid/write-instead table.
 - `plan`: optional path of `plans/<label>.md` from `/section plan`. When given, check the section against it as described under Argument and flow.
 - `definitions`: the first appearance (file:line) of every listed symbol, acronym and emphasised term in the thesis, from the lint script.
 
 # Read first
 
-1. The thesis `CLAUDE.md`, all of it. Then the register card: it stands for the reference section, so do not read the reference section itself. Read the section only if the card is missing. The sections of CLAUDE.md that are yours: Writing Style (tone, voice, register details, the sentence and explanation rules), Clarity, Paragraphs, Literature, Figures/Tables/Captions (the judgement parts), Terminology (hyphenation by role), Acronyms (first use in context), Symbols.
+1. The thesis `CLAUDE.md`, all of it. Then the register card: it defines the voice and stands for the reference section, so do not read the reference section itself. When quoting a sentence that shows the intended voice, quote an exemplar from the card, and when a passage matches a row of the avoid table, say which row. The sections of CLAUDE.md that are yours: Writing Style (tone, voice, register details, the sentence and explanation rules), Clarity, Paragraphs, Literature, Figures/Tables/Captions (the judgement parts), Terminology (hyphenation by role), Acronyms (first use in context), Symbols.
 2. `Content/5.ListSymbols.tex` and `Content/4.AcroNyms.tex`.
 3. The chapter, with line numbers.
 4. For define-before-use, use `definitions`: a term whose first appearance is later than its use here, or that is absent, is a finding. Do not search other chapters yourself unless a specific finding needs confirming.

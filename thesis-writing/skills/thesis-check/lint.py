@@ -3,7 +3,8 @@
 
 Usage:
     python lint.py <thesis_root> [chapter.tex ...] [--json]
-    python lint.py <thesis_root> --card      write .claude/cache/register_card.md
+    python lint.py <thesis_root> --card      write .claude/cache/register_card.md, only for a
+                                             thesis without a fixed .claude/register_card.md
 
 With no chapter arguments, every chapter the main .tex loads is checked.
 Drafts (temp*, *_old, *_new) are never checked. The JSON output also carries
@@ -413,9 +414,34 @@ def reference_block(root, files):
     return label, None
 
 
+FIXED_CARD = Path(".claude") / "register_card.md"
+
+
+def frozen_profile(root):
+    """The reference profile frozen in the fixed register card, if the thesis has one."""
+    card = root / FIXED_CARD
+    if not card.exists():
+        return None
+    m = re.search(r"<!--\s*profile:([^>]*)-->", card.read_text(encoding="utf-8", errors="replace"))
+    if not m:
+        return None
+    vals = dict(re.findall(r"(\w+)=([\d.]+)", m.group(1)))
+    try:
+        return {"sentences": None,
+                "words_per_sentence": float(vals["words_per_sentence"]),
+                "passive_share": float(vals["passive_share"]),
+                "past_share_of_tensed": float(vals["past_share_of_tensed"]),
+                "intensifiers_per_1000_words": float(vals["intensifiers_per_1000_words"])}
+    except KeyError:
+        return None
+
+
 def register_report(root, files):
     label, block = reference_block(root, chapter_files(root, []))
-    ref = profile(prose_text(block)) if block else None
+    # a fixed card freezes the reference: editing the reference section never moves the target
+    ref = frozen_profile(root) or (profile(prose_text(block)) if block else None)
+    if frozen_profile(root):
+        label = f"{label} (frozen in {FIXED_CARD.as_posix()})"
     rows = []
     for p in files:
         if FRONT_MATTER.search(p.name):
@@ -562,6 +588,9 @@ def main(argv):
         print(__doc__); return 2
     root = Path(args[0]).resolve()
     if "--card" in argv:
+        if (root / FIXED_CARD).exists():
+            print(f"fixed register card exists at {root / FIXED_CARD}; it is never regenerated")
+            return 0
         out = register_card(root)
         print(f"register card written: {out}" if out else "no register reference found in CLAUDE.md")
         return 0

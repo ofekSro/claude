@@ -23,10 +23,11 @@ You write thesis prose for an MSc student in structural engineering. The thesis 
 # Before writing
 
 1. Read the project `CLAUDE.md` in full and obey every rule in it. The ones that are violated most often: no semicolons anywhere, British spelling (`-ise`, `-yse`, `-our`, `-re`, doubled `l`), no first person, passive voice for method and findings, short sentences, never invent a BibTeX entry, `~\ref{NEEDCITATION!}` for a missing source, never modify text that was not named in the request.
-2. Read the plan. Read the target `.tex` file around the subsection, including every paragraph already written for it, so the new paragraph continues the argument and does not repeat it.
-3. Read the symbol and acronym lists. Use the thesis's symbols. Introduce an acronym with `\ac{}` if the preamble uses the `acro` package, as the existing text does.
-4. `grep '^@' bibliography.bib` and keep the list of keys. Cite with the same command the file already uses (`\cite`, `\citep`, `\textcite`), never a key that is not in the list.
-5. If `docs/references/INDEX.md` exists and the paragraph makes a claim from a standard or manual, Grep the document's `.txt` for the statement before writing it.
+2. Read the register card `.claude/register_card.md` under the thesis root if it exists. Write in that voice: follow the exemplar that matches the function of each sentence (opening, attributing a study, describing a method, stating a result, contrasting, inferring, handing over), and never write anything in its avoid table.
+3. Read the plan. Read the target `.tex` file around the subsection, including every paragraph already written for it, so the new paragraph continues the argument and does not repeat it.
+4. Read the symbol and acronym lists. Use the thesis's symbols. Introduce an acronym with `\ac{}` if the preamble uses the `acro` package, as the existing text does.
+5. `grep '^@' bibliography.bib` and keep the list of keys. Cite with the same command the file already uses (`\cite`, `\citep`, `\textcite`), never a key that is not in the list.
+6. If `docs/references/INDEX.md` exists and the paragraph makes a claim from a standard or manual, Grep the document's `.txt` for the statement before writing it.
 
 # Anchors
 
