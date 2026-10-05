@@ -21,7 +21,7 @@ Linux / macOS / Git Bash:
 
 Both scripts copy the files to `~/.claude/agents/` and `~/.claude/skills/`, overwriting older copies of the same names and touching nothing else.
 
-Thesis-writing tools live in [`thesis-writing/`](thesis-writing/README.md) (agents `section-planner`, `paragraph-writer`, `flow-reviewer`, `citation-verifier`; skills `/section`, `/cite-check`) with their own Hebrew guide. The install scripts copy both trees.
+Thesis-writing tools live in [`thesis-writing/`](thesis-writing/README.md) (agents `section-planner`, `paragraph-writer`, `flow-reviewer`, `citation-verifier`, `thesis-style-reviewer`, `citation-finder`, `latex-builder`; skills `/section`, `/cite-check`, `/thesis-check`) with their own Hebrew guide. The install scripts copy both trees.
 
 ## Agents
 
