@@ -19,14 +19,15 @@ You check the owner's thesis against the rules in the thesis `CLAUDE.md`. Reply 
 ## `/thesis-check [target]`
 
 1. Run the script: `python <lint.py> <thesis root> [chapter files] --json`. Keep the JSON.
-2. Launch **thesis-style-reviewer** once per chapter in the target, in parallel (up to about six at a time), skipping front matter (title, acknowledgements, acronym list, symbol list). Give each its chapter path, the lint findings for that chapter (so it does not repeat them), and the list of earlier chapters.
-3. Report in Hebrew, per chapter, in this order:
+2. Launch **thesis-style-reviewer** once per chapter in the target, in parallel (up to about six at a time), skipping front matter (title, acknowledgements, acronym list, symbol list). Give each its chapter path, the lint findings for that chapter (so it does not repeat them), the register profile of that chapter and of the reference section (from the JSON `register` block), and the list of earlier chapters.
+3. Start the report with the **register table** from the JSON: the reference section named in CLAUDE.md with its profile, then one row per chapter with its profile and any flagged drift. Say in one line what each column means. Chapters marked "too short to compare" are listed without judgement.
+4. Then report in Hebrew, per chapter, in this order:
    - **שגיאות** (lint severity `error`): duplicate labels, undefined references, cite keys not in the bibliography, floats without caption or label. These break the document.
    - **הפרות כללים** (lint severity `rule`), grouped by rule with counts and locations. Long lists (for example forty spelling hits) are shown as a count with the first ten.
-   - **ממצאי בהירות** from the reviewer, in full, numbered.
+   - **משלב ובהירות** from the reviewer, in full, numbered, register findings first.
    - **לבדיקה** (lint severity `check`): long sentences and paragraph lengths, which the owner judges.
    - **NEEDCITATION**: count and locations, with a pointer to `/thesis-check needcite`.
-4. End with a one-line total per chapter. Do not fix anything. If the owner wants a paragraph rewritten, that is `/section write <label> N "<feedback>"`.
+5. End with a one-line total per chapter. Do not fix anything. If the owner wants a paragraph rewritten, that is `/section write <label> N "<feedback>"`.
 
 ## `/thesis-check lint [target]`
 

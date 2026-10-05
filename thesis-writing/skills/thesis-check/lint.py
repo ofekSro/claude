@@ -47,6 +47,15 @@ TERM_FIXES = {
     "set-up": "setup (noun) / set up (verb)",
 }
 FIRST_PERSON = re.compile(r"\b(I|we|We|our|Our|us|my|My|ours|myself|ourselves)\b")
+CONTRACTION = re.compile(r"\b\w+(n't|'re|'ve|'ll|'d|'m)\b|\b(it's|that's|there's|here's|what's|let's)\b", re.I)
+INTENSIFIERS = re.compile(r"\b(very|extremely|dramatically|huge|hugely|clearly|obviously|remarkably|"
+                          r"a lot|lots of|incredibly|massive|massively|tremendous|tremendously|"
+                          r"really|quite|surprisingly|interestingly|of course|basically|totally|"
+                          r"absolutely|enormous|enormously|striking|strikingly)\b", re.I)
+INFORMAL_START = re.compile(r"(?:^|[.!?]\s+)(So|But|And|Also|Plus|Anyway|Well),?\s")
+PASSIVE = re.compile(r"\b(is|are|was|were|be|been|being)\s+(\w+ly\s+)?\w+(ed|en|wn|lt|pt|ght|un|ung|ade|one|ept)\b", re.I)
+PAST = re.compile(r"\b(was|were|had|did)\b|\b\w+ed\b", re.I)
+PRESENT = re.compile(r"\b(is|are|has|have|does|do)\b", re.I)
 
 # ---------------------------------------------------------------- latex masking
 MATH_ENVS = r"equation|equation\*|align|align\*|gather|gather\*|multline|multline\*|eqnarray|eqnarray\*|displaymath|math"
@@ -286,6 +295,13 @@ def lint(root, files):
                     add("terminology", rel, i, m.group(0), fix)
             for m in FIRST_PERSON.finditer(masked):
                 add("first-person", rel, i, line, f"'{m.group(0)}'", m.start())
+            for m in CONTRACTION.finditer(masked):
+                add("contraction", rel, i, line, f"'{m.group(0)}': write it out", m.start())
+            for m in INTENSIFIERS.finditer(masked):
+                add("intensifier", rel, i, line, f"'{m.group(0)}': remove or state the magnitude", m.start())
+            for m in INFORMAL_START.finditer(masked):
+                add("informal-connector", rel, i, line,
+                    f"'{m.group(1)}' at sentence start: use However, / Accordingly, / In addition,", m.start(1))
             for m in re.finditer(r"\b(Figure|Fig\.|Table|Equation|Eq\.|Section)\s*~?\s*\(?\d+(\.\d+)?\)?", masked):
                 add("hardcoded-reference", rel, i, m.group(0), "use \\ref / \\eqref")
             for key, (short, long_) in acr.items():
@@ -332,6 +348,92 @@ def lint(root, files):
     return findings
 
 
+# ---------------------------------------------------------------- register profile
+def prose_text(lines):
+    """Running prose of a block of lines: no comments, environments, headings or math."""
+    out, stack = [], []
+    for raw in lines:
+        line = strip_comment(raw)
+        for m in re.finditer(r"\\begin\{([^}]+)\}", line):
+            stack.append(m.group(1))
+        skip = any(re.fullmatch(SKIP_ENVS + r"|figure\*?|table\*?", e) for e in stack)
+        for m in re.finditer(r"\\end\{([^}]+)\}", line):
+            if stack and stack[-1] == m.group(1):
+                stack.pop()
+        if skip or re.match(r"\s*\\(section|subsection|subsubsection|label|input|begin|end)", line):
+            continue
+        out.append(re.sub(r"\s+", " ", mask_line(line)))
+    return " ".join(out)
+
+
+def profile(text):
+    sents = [s for s in sentences(text) if len(s.split()) > 2]
+    if not sents:
+        return None
+    words = sum(len(s.split()) for s in sents)
+    passive = sum(1 for s in sents if PASSIVE.search(s))
+    past = sum(len(PAST.findall(s)) for s in sents)
+    present = sum(len(PRESENT.findall(s)) for s in sents)
+    return {
+        "sentences": len(sents),
+        "words_per_sentence": round(words / len(sents), 1),
+        "passive_share": round(100 * passive / len(sents)),
+        "past_share_of_tensed": round(100 * past / max(1, past + present)),
+        "intensifiers_per_1000_words": round(1000 * len(INTENSIFIERS.findall(text)) / max(1, words), 1),
+    }
+
+
+def reference_block(root, files):
+    """Lines of the register-reference section named in the thesis CLAUDE.md."""
+    cm = root / "CLAUDE.md"
+    if not cm.exists():
+        return None, None
+    m = re.search(r"Register reference:\s*`([^`]+)`", cm.read_text(encoding="utf-8", errors="replace"))
+    if not m:
+        return None, None
+    label = m.group(1)
+    levels = {"section": 1, "subsection": 2, "subsubsection": 3}
+    for p in files:
+        lines = p.read_text(encoding="utf-8", errors="replace").splitlines()
+        for i, l in enumerate(lines):
+            if "\\label{%s}" % label in l:
+                h = re.search(r"\\(section|subsection|subsubsection)\{", l)
+                lvl = levels[h.group(1)] if h else 2
+                end = len(lines)
+                for j in range(i + 1, len(lines)):
+                    hh = re.match(r"\s*\\(section|subsection|subsubsection)\{", lines[j])
+                    if hh and levels[hh.group(1)] <= lvl:
+                        end = j
+                        break
+                return label, lines[i:end]
+    return label, None
+
+
+def register_report(root, files):
+    label, block = reference_block(root, chapter_files(root, []))
+    ref = profile(prose_text(block)) if block else None
+    rows = []
+    for p in files:
+        if FRONT_MATTER.search(p.name):
+            continue
+        pr = profile(prose_text(p.read_text(encoding="utf-8", errors="replace").splitlines()))
+        if not pr:
+            continue
+        flags = []
+        if pr["sentences"] < 15:
+            flags.append("too short to compare")
+        elif ref:
+            if abs(pr["words_per_sentence"] - ref["words_per_sentence"]) > 0.3 * ref["words_per_sentence"]:
+                flags.append("sentence length")
+            # the rules ask for frequent passive voice: only a share well below the reference is a drift
+            if pr["passive_share"] < ref["passive_share"] - 15:
+                flags.append("less passive")
+            if pr["intensifiers_per_1000_words"] > ref["intensifiers_per_1000_words"] + 2:
+                flags.append("intensifiers")
+        rows.append({"file": p.name, **pr, "differs_from_reference": flags})
+    return {"reference": label, "reference_profile": ref, "chapters": rows}
+
+
 SEVERITY = {
     "label-duplicate": "error", "ref-undefined": "error", "cite-key-not-in-bib": "error",
     "float-no-caption": "error", "float-no-label": "error",
@@ -340,6 +442,7 @@ SEVERITY = {
     "ac-in-heading-or-caption": "rule", "ref-without-word": "rule", "eqref-without-Equation": "rule",
     "hardcoded-reference": "rule", "label-has-space": "rule", "label-prefix": "rule",
     "terminology": "rule", "unit-in-table-cell": "rule", "float-not-referenced": "rule",
+    "contraction": "rule", "informal-connector": "rule", "intensifier": "check",
     "paragraph-too-short": "check", "paragraph-too-long": "check", "long-sentence": "check",
     "needcitation": "info",
 }
@@ -357,9 +460,10 @@ def main(argv):
     root = Path(args[0]).resolve()
     files = chapter_files(root, args[1:])
     f = lint(root, files)
+    reg = register_report(root, files)
     if as_json:
-        print(json.dumps({"files": [str(p.relative_to(root)) for p in files], "findings": f},
-                         ensure_ascii=False, indent=1))
+        print(json.dumps({"files": [str(p.relative_to(root)) for p in files], "findings": f,
+                          "register": reg}, ensure_ascii=False, indent=1))
         return 0
     order = ["error", "rule", "check", "info"]
     print(f"Checked {len(files)} file(s): " + ", ".join(p.name for p in files))
@@ -373,6 +477,18 @@ def main(argv):
             for x in f[r]:
                 hint = f"  -> {x['hint']}" if x["hint"] else ""
                 print(f"- {x['file']}:{x['line']}  {x['text']}{hint}")
+    print("\n## REGISTER PROFILE")
+    if reg["reference_profile"]:
+        r = reg["reference_profile"]
+        print(f"reference {reg['reference']}: {r['words_per_sentence']} words/sentence, "
+              f"{r['passive_share']}% passive, {r['past_share_of_tensed']}% past, "
+              f"{r['intensifiers_per_1000_words']} intensifiers/1000 words")
+    else:
+        print("no register reference found in CLAUDE.md ('Register reference: `label`')")
+    for c in reg["chapters"]:
+        flag = ("  <- differs: " + ", ".join(c["differs_from_reference"])) if c["differs_from_reference"] else ""
+        print(f"- {c['file']}: {c['words_per_sentence']} w/s, {c['passive_share']}% passive, "
+              f"{c['past_share_of_tensed']}% past, {c['intensifiers_per_1000_words']} int/1000{flag}")
     print("\nSummary: " + ", ".join(f"{r}={len(v)}" for r, v in sorted(f.items())))
     return 0
 

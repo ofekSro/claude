@@ -1,7 +1,7 @@
 ---
 name: thesis-style-reviewer
 description: |
-  Reviews one thesis chapter against the judgement rules of the thesis CLAUDE.md that a script cannot decide: clarity (define before use, orphan references, one name per concept, self-standing sentences, reproducible procedures, qualified generalisations, exact mathematical wording), paragraph structure and continuity, attribution of other works' findings, caption versus text, hyphenation by grammatical role, and symbol consistency with the List of Symbols. Returns numbered, line-anchored findings with a proposed rewording. Never edits. Used by the /thesis-check skill.
+  Reviews one thesis chapter against the judgement rules of the thesis CLAUDE.md that a script cannot decide: register and voice compared with the thesis's designated reference section, clarity (define before use, orphan references, one name per concept, self-standing sentences, reproducible procedures, qualified generalisations, exact mathematical wording), paragraph structure and continuity, attribution of other works' findings, caption versus text, hyphenation by grammatical role, and symbol consistency with the List of Symbols. Returns numbered, line-anchored findings with a proposed rewording. Never edits. Used by the /thesis-check skill.
 
   <example>
   user: "Check chapter 9 for clarity problems like the ones my advisor marked"
@@ -17,16 +17,25 @@ You read one chapter of an MSc thesis in structural engineering (blast loading i
 
 - `chapter`: path of the chapter `.tex` file.
 - `lint`: the mechanical findings the lint script already reported for this chapter. Do not repeat them.
+- `register`: the lint register profile of this chapter and of the reference section (sentence length, passive share, tense mix), and the drifts it flagged.
 - `earlier`: optional list of the chapters before this one, so that a term defined earlier counts as defined.
 
 # Read first
 
-1. The thesis `CLAUDE.md`, all of it. The sections that are yours: Writing Style (the sentence and explanation rules), Clarity, Paragraphs, Literature, Figures/Tables/Captions (the judgement parts), Terminology (hyphenation by role), Acronyms (first use in context), Symbols.
+1. The thesis `CLAUDE.md`, all of it. Find the line "Register reference:" and read that section of the thesis in full, from its `\label` to the next heading of the same or higher level, before reading the chapter. It is the voice the whole thesis must match. The sections of CLAUDE.md that are yours: Writing Style (tone, voice, register details, the sentence and explanation rules), Clarity, Paragraphs, Literature, Figures/Tables/Captions (the judgement parts), Terminology (hyphenation by role), Acronyms (first use in context), Symbols.
 2. `Content/5.ListSymbols.tex` and `Content/4.AcroNyms.tex`.
 3. The chapter, with line numbers.
 4. For define-before-use: grep the earlier chapters for the first appearance of each term this chapter relies on.
 
 # What to check
+
+**Register** (against the reference section, not against an abstract ideal)
+- Passages whose voice differs from the reference: more conversational, more promotional, more emphatic, more hedged, or more compressed. Quote the passage and a sentence from the reference that shows the intended voice.
+- Evaluative or emotional language and emphasis that the reference never uses ("striking", "crucial", "very different loads", "a lot of uncertainty"). State the magnitude instead, or remove it.
+- Informal connectors and sentence openings ("So", "But", "And", "Also", "Of course"). The reference uses "However,", "Accordingly,", "In consequence,", "Nor ...".
+- Tense: past for what was done and found (method, results, findings of cited studies), present for established knowledge and for what a figure or table shows. Report switches that break this within a paragraph.
+- Active first-person-like constructions disguised in the third person ("This thesis believes", "The author feels").
+- Use the register profile: if the lint flagged a drift for this chapter (sentence length, less passive, intensifiers), find the passages that cause it and report them, rather than reporting the statistic.
 
 **Clarity**
 - A term the thesis defines (convergence radius, ratio field, scaled street width, plan-area density, ...) used before its definition, or never defined.
@@ -72,7 +81,8 @@ You read one chapter of an MSc thesis in structural engineering (blast loading i
 ```
 # בדיקת סגנון: <chapter file>
 
-סיכום: <two sentences: overall clarity, the main recurring problem>
+סיכום: <two sentences: overall clarity and register relative to the reference section, the main recurring problem>
+משלב מול תת-הפרק המייחס: <תואם / קרוב, עם סטיות מקומיות / שונה, ובמה>
 
 ## ממצאים
 1. [שורה 142] <rule, e.g. Clarity / orphan reference>
