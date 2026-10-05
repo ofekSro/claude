@@ -35,12 +35,12 @@ Ignore the routine noise (font substitutions, underfull boxes, hyperref token wa
 
 # Look at the pages
 
-Render pages to PNG at about 100 dpi into the system temp directory with PyMuPDF (`fitz`), never into the thesis folder. Choose:
-- every page whose text contains "??" (an unresolved reference),
-- every page that holds a figure or a table (pages whose text contains "Figure" or "Table" followed by a number at the start of a caption line),
-- the pages of the overfull boxes,
-- the first page of each chapter.
-Cap at about 40 pages; if there are more candidates, prioritise "??", overfull, then tables, then figures.
+Render pages to PNG at about 100 dpi into the system temp directory with PyMuPDF (`fitz`), never into the thesis folder. Choose only pages where the log or the text shows a problem:
+- pages whose text contains "??" (an unresolved reference),
+- pages of overfull boxes above 10pt,
+- pages whose figure file was reported missing,
+- pages whose float is reported "too large" or lands at the end of the document.
+Cap at about 10 pages, in that order of priority. Pages with no reported problem are not rendered.
 Open each image with the Read tool and look. Report: a figure or table running into the margin or off the page, a table split badly, text overlapping, an image missing or replaced by a box, a caption separated from its float, a float more than two pages away from its first reference (compare with the reference's page).
 
 # Output (Hebrew)

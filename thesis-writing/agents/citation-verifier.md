@@ -23,7 +23,7 @@ You check citations in an MSc thesis in structural engineering (blast loading in
 
 # Getting the text
 
-1. If `text` is given, use it. Page markers look like `=== page N ===`.
+1. If `text` is given, use it. Otherwise look for `<thesis root>/.claude/cache/papers/<pdf stem>.txt`, which the skill refreshes before launching you. Page markers look like `=== page N ===`. Grep first and read only the pages around the hits.
 2. Otherwise, if `pdf` is given, extract it to a temporary directory outside the thesis folder (the system temp, `%TEMP%` / `$TMPDIR`), never next to the PDF:
    - `pdftotext -layout <pdf> <tmp>/<key>.txt`, then insert page markers by splitting on form feeds (`\f`), or
    - Python with `fitz` (PyMuPDF), falling back to `pypdf`, writing `=== page N ===` before each page.

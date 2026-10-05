@@ -29,7 +29,9 @@ Show the owner the key-to-file table before launching anything if any match is u
 
 ## Stage 3: verify
 
-Launch one **citation-verifier** per key, in parallel (up to about six at a time), each with: the key, the bib entry, the PDF path or "none", the `.txt` sidecar path from `docs/references/` if one exists, and its list of citing sentences with file and line.
+First refresh the text cache: run `extract_papers.py` (in the `thesis-check` skill folder, under the thesis `.claude/skills/` or `~/.claude/skills/`) with the thesis root. It extracts only new or changed PDFs into `.claude/cache/papers/`, so verifiers grep ready texts instead of extracting again.
+
+Then launch one **citation-verifier** per key, in parallel (up to about six at a time), each with: the key, the bib entry, the PDF path or "none", the `.txt` sidecar path from `docs/references/` if one exists, and its list of citing sentences with file and line.
 
 ## Stage 4: report
 
@@ -45,7 +47,7 @@ Do not apply any rewording. If the owner wants one applied, that is a separate r
 
 - Long books (handbooks, textbooks) read slowly. If a key is a book, suggest registering it once with `/ref add` so its text is extracted and reused.
 - A source that only repeats another author's claim is flagged as secondary; the owner may prefer to cite the original.
-- Nothing is cached in the thesis folder. Extracted texts go to the system temp directory unless the source is registered with `/ref`.
+- Extracted paper texts live in `.claude/cache/papers/` of the thesis, a derived cache that `extract_papers.py` keeps current. The thesis files themselves are never written.
 
 ## Model fallback
 

@@ -22,7 +22,7 @@ You help an MSc student in structural engineering fill missing citations. You ne
 
 # Procedure
 
-1. Extract every PDF in `papers` to text once, into the system temp directory (never into the thesis folder), with `=== page N ===` markers: `pdftotext -layout`, or Python `fitz` (PyMuPDF), falling back to `pypdf`. Reuse `.txt` files from `references` where they exist. Long books are searched, not read whole.
+1. Use the extracted texts in `<thesis root>/.claude/cache/papers/` (one `.txt` per PDF, with `=== page N ===` markers, plus `index.tsv` with author and year). The skill refreshes this cache before launching you. Search with Grep first and read only the pages around the hits; never read a whole paper. Fall back to extracting a PDF yourself into the system temp directory only if its text is missing from the cache.
 2. Read the bibliography and map each PDF to a bib key by first author's surname and year in the file name, then by title words. Record PDFs that have no bib entry.
 3. For each marker:
    - Isolate the specific assertion that needs support.
