@@ -1,7 +1,7 @@
 ---
 name: citation-verifier
 description: |
-  Checks whether a cited source actually supports the sentences that cite it. Given one BibTeX key, its bib entry, the PDF path and the citing sentences from a LaTeX thesis, it finds where in the source each claim is made and returns the page, a verbatim quote and a verdict (supported / partly supported / not found / source says otherwise). Read-only: never edits the thesis, the bib or the PDF. Used by the /cite-check skill, one instance per cited source.
+  Checks whether a cited source actually supports the sentences that cite it. Given one BibTeX key, its bib entry, the PDF path and the citing sentences from a LaTeX thesis, it finds where in the source each claim is made and returns the page, a verbatim quote and a verdict (supported / partly supported / not found / source says otherwise). Read-only: never edits the thesis, the bib or the PDF. Used by /thesis-check <target> cite, one instance per cited source.
 
   <example>
   user: "Does fouchier2017experimental really say peak pressure drops at intersections?"

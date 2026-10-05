@@ -1,9 +1,9 @@
 ---
 name: section
-description: Thesis-writing workflow for one LaTeX subsection at a time. /section plan <label> turns the roadmap agreed in chat into plans/<label>.md (section-planner). /section write <label> [N|all] [feedback] writes paragraphs from the plan (paragraph-writer). /section review <label> checks the argument inside the subsection, /section fit <label> checks it against the chapter and the thesis (flow-reviewer). /section apply <label> <finding numbers> applies chosen findings. Nothing is edited without an explicit request.
+description: Writing the LaTeX thesis one subsection at a time. /section plan <label> turns the roadmap agreed in chat into plans/<label>.md (section-planner). /section write <label> [N|all] [feedback] writes or rewrites paragraphs from the plan (paragraph-writer). /section apply <label> <finding numbers> applies findings chosen from the last /thesis-check of that label. /section status lists plans and progress. All checking lives in /thesis-check. Nothing is edited without an explicit request.
 ---
 
-You are running the author's subsection workflow: roadmap in conversation, plan file, paragraph by paragraph writing, flow check inside the subsection, fit check against the whole. The conversation stays the place where decisions are made. The agents give it a persistent plan and fresh eyes.
+You are running the author's writing workflow: roadmap in conversation, plan file, paragraph by paragraph writing, and applying chosen review findings. All checks (rules, register, clarity, flow, citations, fit) are done by `/thesis-check`; this skill only writes. The conversation stays the place where decisions are made.
 
 Subagents cannot launch each other, so you launch every agent from here. Reply to the author in Hebrew. All prose written into the thesis is English, per the project `CLAUDE.md`.
 
@@ -29,21 +29,19 @@ Subagents cannot launch each other, so you launch every agent from here. Reply t
 5. Show the author the written paragraph(s) as they now stand in the file, plus the writer's notes (citations used, NEEDCITATION inserted, TODO figures). Do not paraphrase the paragraph. The author reacts in chat, and a further `/section write <label> N <feedback>` rewrites it.
 6. With `all`, write the paragraphs in order in one launch, so each sees the previous ones.
 
-## `/section review <label>`  and  `/section fit <label>`
+## Checking what was written
 
-1. Launch **flow-reviewer** with the label, the mode (`review` or `fit`) and the plan path if it exists. Wait.
-2. Show the author the report as returned: verdict, numbered findings, style occurrences, what works. Do not apply anything.
-3. Tell the author they can answer with the numbers to apply, for example `/section apply <label> 2 5 7`, or discuss a finding first.
+Not here. After writing, the author runs `/thesis-check <label> deep` (rules, register, clarity and flow against the plan), `/thesis-check <label> cite` (citations) and `/thesis-check <label> fit` (place in the chapter). Point the author to them after each `write`.
 
 ## `/section apply <label> <numbers>`
 
-1. Take the chosen findings from the last review of this label in the conversation. If the conversation no longer holds it, re-run the review first and ask again.
+1. Take the chosen findings from the last `/thesis-check` report of this label in the conversation (`deep`, `cite` or `fit`; a lint finding counts too). Numbers refer to that report. If the conversation no longer holds it, ask the author to run the check again.
 2. For each chosen finding, the change is applied to the paragraph it names by launching **paragraph-writer** in `rewrite` mode with the finding's problem and suggestion as feedback. Findings that only move or reorder paragraphs, or that touch text outside the subsection, are not applied by an agent: describe the change and ask the author to confirm, then do it yourself with the Edit tool, minimally.
 3. Show the author each rewritten paragraph.
 
 ## `/section status [label]`
 
-List the plans in `plans/`, and for each whether its paragraphs exist in the `.tex` (count the `% [Pn]` anchors against the plan), and whether a review has been run in this conversation.
+List the plans in `plans/`, and for each whether its paragraphs exist in the `.tex` (count the `% [Pn]` anchors against the plan), and whether `/thesis-check` has been run on it in this conversation.
 
 ## Rules
 
@@ -55,4 +53,4 @@ List the plans in `plans/`, and for each whether its paragraphs exist in the `.t
 
 ## Model fallback
 
-Agents that need judgement run on Fable 5 (`model: claude-fable-5` in their frontmatter). If an agent comes back with a refusal on safety grounds, fails because Fable 5 is unavailable or out of usage, or returns an empty or evasive report that shows it declined the task (this domain uses words like charge, TNT and detonation in an ordinary engineering sense), relaunch the same agent once with the Agent tool's `model: "claude-opus-5-5"` override (Opus 5.5), with the same prompt. Say in the reply that the fallback was used and for which agent. Do not retry more than once, and do not rephrase the task to get around a refusal; if Opus also declines, report it to the owner.
+section-planner and paragraph-writer run on Fable 5 (`model: claude-fable-5` in their frontmatter). If an agent comes back with a refusal on safety grounds, fails because Fable 5 is unavailable or out of usage, or returns an empty or evasive report that shows it declined the task (this domain uses words like charge, TNT and detonation in an ordinary engineering sense), relaunch the same agent once with the Agent tool's `model: "claude-opus-5-5"` override (Opus 5.5), with the same prompt. Say in the reply that the fallback was used and for which agent. Do not retry more than once, and do not rephrase the task to get around a refusal; if Opus also declines, report it to the owner.

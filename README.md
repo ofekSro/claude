@@ -21,7 +21,7 @@ Linux / macOS / Git Bash:
 
 Both scripts copy the files to `~/.claude/agents/` and `~/.claude/skills/`, overwriting older copies of the same names and touching nothing else.
 
-Thesis-writing tools live in [`thesis-writing/`](thesis-writing/README.md) (agents `section-planner`, `paragraph-writer`, `flow-reviewer`, `citation-verifier`, `thesis-style-reviewer`, `citation-finder`, `latex-builder`; skills `/section`, `/cite-check`, `/thesis-check`) with their own Hebrew guide. The install scripts copy both trees.
+Thesis-writing tools live in [`thesis-writing/`](thesis-writing/README.md) (agents `section-planner`, `paragraph-writer`, `flow-reviewer`, `citation-verifier`, `thesis-style-reviewer`, `citation-finder`, `latex-builder`; skills `/section` for writing, `/thesis-check` for every check) with their own Hebrew guide. The install scripts copy both trees.
 
 ## Agents
 
@@ -54,7 +54,6 @@ Thesis-writing tools live in [`thesis-writing/`](thesis-writing/README.md) (agen
 | `/todo` | Works through `TODO.md` in batches: plan, implement, verify, simplify, QA, then moves finished tasks to `DONE.md` with details. |
 | `/ref` | Registers reference documents (manuals, standards) under `docs/references/` with an index that every agent reads first. |
 | `/section` | Thesis writing, one LaTeX subsection at a time: `plan`, `write`, `review`, `fit`, `apply`, `status`. The roadmap is agreed in chat, the plan is a file, the review is a separate agent. |
-| `/cite-check` | Checks that cited sources support the thesis sentences that cite them, with page and quote for each, for a section, a line range or one bib key. Read-only. |
 | `/verify` | Scientific audit of a research repo: five read-only lenses in parallel, a summary, `trace` for the thesis matrix, and `fix <id>` with an explain-then-approve flow for each finding. |
 | `/decide` | Decision register `docs/DECISIONS.md` (`index`, `status`), framing a new decision before measuring (`open`), and reviewing one (`check D<n>`). Carries a binding protocol for disagreements with the owner. |
 | `/worklog` | Appends a dated Hebrew entry to `WORKLOG.md` from the current conversation, only when the owner asks. `draft` previews, `show` reads. |
